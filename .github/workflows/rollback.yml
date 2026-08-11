@@ -1,0 +1,24 @@
+name: APC Analytics - Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Grund fuer das Rollback"
+        required: true
+        default: "Fehlerhafte Produktionsversion"
+
+jobs:
+  rollback:
+    name: Rollback letzte Produktionsversion
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: echo "Rollback-Grund - ${{ github.event.inputs.reason }}"
+      - run: npm run rollback
+      - run: npm run migrate -- down --env=production
+      - run: npm run healthcheck

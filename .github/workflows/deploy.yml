@@ -1,0 +1,68 @@
+name: APC Analytics - CI/CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Tests und Report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm test
+      - run: npm run report
+
+  migrate-staging:
+    name: Migration - Staging
+    needs: test
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm run migrate -- up --env=staging
+
+  deploy-staging:
+    name: Deploy und Health-Check - Staging
+    needs: migrate-staging
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: echo "Simuliertes Deployment auf Staging..."
+      - run: npm run healthcheck
+
+  migrate-production:
+    name: Migration - Produktion
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm run migrate -- up --env=production
+
+  deploy-production:
+    name: Deploy und Health-Check - Produktion
+    needs: migrate-production
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: echo "Simuliertes Deployment auf Produktion..."
+      - run: npm run healthcheck

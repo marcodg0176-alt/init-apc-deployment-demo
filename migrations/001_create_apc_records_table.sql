@@ -1,0 +1,10 @@
+CREATE TABLE apc_records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  trip_id VARCHAR(64) NOT NULL,
+  line VARCHAR(64) NOT NULL,
+  stop VARCHAR(128) NOT NULL,
+  sequence INTEGER NOT NULL,
+  timestamp DATETIME NOT NULL,
+  boarding INTEGER NOT NULL,
+  alighting INTEGER NOT NULL
+);

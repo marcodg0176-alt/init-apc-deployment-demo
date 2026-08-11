@@ -1,0 +1,1 @@
+ALTER TABLE apc_records ADD COLUMN is_anomaly BOOLEAN NOT NULL DEFAULT 0;
