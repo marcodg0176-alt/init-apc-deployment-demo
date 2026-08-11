@@ -1,0 +1,8 @@
+node_modules/
+npm-debug.log*
+
+# Lokaler Migrationsstatus je Umgebung (wird von migrations/migrate.js erzeugt)
+migrations/.migration-state.*.json
+
+.DS_Store
+Thumbs.db
