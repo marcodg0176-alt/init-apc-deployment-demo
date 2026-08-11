@@ -3,6 +3,9 @@ name: APC Analytics - CI/CD
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
   workflow_dispatch:
 
 jobs:
